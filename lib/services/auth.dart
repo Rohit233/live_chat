@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:live_chat_messenger/helperfunctions/basic_helper.dart';
-import 'package:live_chat_messenger/helperfunctions/sharedpref_helper.dart';
+import 'package:live_chat_messenger/services/basic_helper.dart';
+import 'package:live_chat_messenger/services/sharedpref_helper.dart';
 import 'package:live_chat_messenger/screens/signin_email.dart';
 import 'package:live_chat_messenger/screens/signup_email.dart';
 import 'package:live_chat_messenger/services/database.dart';

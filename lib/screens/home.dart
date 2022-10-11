@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:live_chat_messenger/helperfunctions/sharedpref_helper.dart';
+import 'package:live_chat_messenger/services/sharedpref_helper.dart';
 import 'package:live_chat_messenger/services/auth.dart';
 import 'package:live_chat_messenger/services/database.dart';
 import 'package:live_chat_messenger/screens/chatscreen.dart';
