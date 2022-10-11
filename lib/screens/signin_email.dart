@@ -3,6 +3,7 @@ import 'package:live_chat_messenger/helperfunctions/basic_helper.dart';
 import 'package:live_chat_messenger/screens/signin.dart';
 import 'package:live_chat_messenger/screens/signup_email.dart';
 import 'package:live_chat_messenger/services/auth.dart';
+import 'dart:io';
 
 class SignInFields {
   late String email;
@@ -20,8 +21,15 @@ class _SignInEmailState extends State<SignInEmail> {
   final GlobalKey<FormState> _formKey = GlobalKey();
   final SignInFields _signInFields = SignInFields();
   bool isLoading = false;
+
   @override
   Widget build(BuildContext context) {
+    var systemIcon = Icons.arrow_back_ios_new_rounded;
+    if (Platform.isAndroid) {
+      systemIcon = Icons.arrow_back_rounded;
+    } else if (Platform.isIOS) {
+      systemIcon = Icons.arrow_back_ios_new_rounded;
+    }
     return Scaffold(
       appBar: AppBar(
         title: Text("Live Chat"),
@@ -37,7 +45,7 @@ class _SignInEmailState extends State<SignInEmail> {
                     MaterialPageRoute(builder: (context) => SignIn()),
                     (route) => false);
               },
-              icon: Icon(Icons.arrow_back_ios_new_rounded)),
+              icon: Icon(systemIcon)),
         ],
       ),
       body: Center(
