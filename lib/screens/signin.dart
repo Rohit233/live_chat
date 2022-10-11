@@ -64,10 +64,11 @@ class _SignInState extends State<SignIn> {
                   padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
                   child: GestureDetector(
                       onTap: () {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) {
-                          return SignInEmail();
-                        }));
+                        Navigator.pushAndRemoveUntil(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => SignInEmail()),
+                                  (route) => false);
                       },
                       child: Container(
                           padding: EdgeInsets.all(20),

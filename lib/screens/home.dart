@@ -20,10 +20,10 @@ class _HomeState extends State<Home> {
       TextEditingController();
 
   Future<dynamic> getMyInfoFromSharedPreferences() async {
-    String? myName = await SharedPreferenceHelper().getDisplayName();
-    String? myProfilePic = await SharedPreferenceHelper().getProfileUrl();
-    String? myUserName = await SharedPreferenceHelper().getUserName();
-    String? myEmail = await SharedPreferenceHelper().getUserEmail();
+    myName = await SharedPreferenceHelper().getDisplayName();
+    myProfilePic = await SharedPreferenceHelper().getProfileUrl();
+    myUserName = await SharedPreferenceHelper().getUserName();
+    myEmail = await SharedPreferenceHelper().getUserEmail();
     setState(() {});
   }
 
@@ -47,6 +47,11 @@ class _HomeState extends State<Home> {
     return StreamBuilder<dynamic>(
       stream: chatRoomsStream,
       builder: (context, snapshot) {
+        if(snapshot.connectionState == ConnectionState.waiting){
+            return Center(
+              child: CircularProgressIndicator() ,
+            );
+        }
         return snapshot.hasData
             ? ListView.builder(
                 itemCount: snapshot.data.docs.length,
@@ -107,6 +112,11 @@ class _HomeState extends State<Home> {
     return StreamBuilder<dynamic>(
       stream: usersStream,
       builder: (context, snapshot) {
+        if(snapshot.connectionState == ConnectionState.waiting){
+            return Center(
+              child: CircularProgressIndicator() ,
+            );
+        }
         return snapshot.hasData
             ? ListView.builder(
                 itemCount: snapshot.data.docs.length,
@@ -242,11 +252,17 @@ class _ChatRoomListTileState extends State<ChatRoomListTile> {
   String profilePicUrl = "", name = "", username = "";
 
   getThisUserInfo() async {
-    username =
-        widget.chatRoomId.replaceAll(widget.myUsername, "").replaceAll("_", "");
+    List<String> splitChatRoomId = widget.chatRoomId.split('_');
+    if(splitChatRoomId[0] != widget.myUsername){
+       username = splitChatRoomId[0];
+    }
+    else{
+      username = splitChatRoomId[1];
+    }
+  
     QuerySnapshot querySnapshot = await DatabaseMethods().getUserInfo(username);
     name = "${querySnapshot.docs[0]["name"]}";
-    profilePicUrl = "${querySnapshot.docs[0]["imgUrl"]}";
+    profilePicUrl = querySnapshot.docs[0]["imgUrl"] ?? '';
     setState(() {});
   }
 
@@ -269,7 +285,11 @@ class _ChatRoomListTileState extends State<ChatRoomListTile> {
         children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(30),
-            child: Image.network(
+            child: profilePicUrl.isEmpty  ? Image.asset(
+              'assets/userProfile.png',
+              height: 30,
+              width: 30,
+            ) : Image.network(
               profilePicUrl,
               height: 30,
               width: 30,
