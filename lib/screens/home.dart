@@ -253,17 +253,20 @@ class _ChatRoomListTileState extends State<ChatRoomListTile> {
 
   getThisUserInfo() async {
     List<String> splitChatRoomId = widget.chatRoomId.split('_');
-    if(splitChatRoomId[0] != widget.myUsername){
+    if(splitChatRoomId[0] != widget.myUsername && splitChatRoomId[1] == widget.myUsername){
        username = splitChatRoomId[0];
     }
-    else{
+    else if(splitChatRoomId[1] != widget.myUsername && splitChatRoomId[0] == widget.myUsername){
       username = splitChatRoomId[1];
     }
   
     QuerySnapshot querySnapshot = await DatabaseMethods().getUserInfo(username);
-    name = "${querySnapshot.docs[0]["name"]}";
-    profilePicUrl = querySnapshot.docs[0]["imgUrl"] ?? '';
-    setState(() {});
+    if(querySnapshot.docs.isNotEmpty){
+       name = "${querySnapshot.docs[0]["name"]}";
+       profilePicUrl = querySnapshot.docs[0]["imgUrl"] ?? '';
+       setState(() {});
+    }
+   
   }
 
   @override
